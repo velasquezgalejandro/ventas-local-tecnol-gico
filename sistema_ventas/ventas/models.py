@@ -1,9 +1,18 @@
 # Create your models here.
 from django.db import models
 
+# modelo de categoria
+class Categoria(models.Model):
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField()
+
+    def __str__(self):
+        return str(self.nombre)
+
 # modelo de producto
 class Producto(models.Model):
     nombre = models.CharField(max_length=200)
+    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     descripcion = models.TextField()
     precio = models.DecimalField(decimal_places=2)
     stock = models.IntegerField()
