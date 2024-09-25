@@ -14,7 +14,7 @@ class Producto(models.Model):
     nombre = models.CharField(max_length=200)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     descripcion = models.TextField()
-    precio = models.DecimalField(decimal_places=2)
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.IntegerField()
 
     def __str__(self):
