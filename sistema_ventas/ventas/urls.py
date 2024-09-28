@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import inicio, categorias, listar_categorias, agregar_categoria, editar_categoria, detalle_categoria, eliminar_categoria, clientes, listar_clientes, agregar_clientes, detalle_cliente, editar_cliente, eliminar_cliente, productos, listar_productos, agregar_producto, detalle_producto, editar_producto, eliminar_producto, ventas
+from .views import inicio, categorias, listar_categorias, agregar_categoria, editar_categoria, detalle_categoria, eliminar_categoria, clientes, listar_clientes, agregar_clientes, detalle_cliente, editar_cliente, eliminar_cliente, productos, listar_productos, agregar_producto, detalle_producto, editar_producto, eliminar_producto, ventas, listar_ventas, agregar_venta, detalle_venta, editar_venta, eliminar_venta
 
 
 urlpatterns = [
@@ -28,5 +28,12 @@ urlpatterns = [
     path('productos/agregar/', agregar_producto, name='agregar_producto'),
     path('productos/detalle/<int:pk>/', detalle_producto, name='detalle_producto'),
     path('productos/editar/<int:pk>/', editar_producto, name='editar_producto'),
-    path('productos/eliminar/<int:pk>/', eliminar_producto, name='eliminar_producto')
+    path('productos/eliminar/<int:pk>/', eliminar_producto, name='eliminar_producto'),
+
+# ventas
+    path('ventas/listar/', listar_ventas, name='listar_ventas'),
+    path('ventas/agregar/', agregar_venta, name='agregar_venta'),
+    path('ventas/detalle/<int:pk>/', detalle_venta, name='detalle_venta'),
+    path('ventas/editar/<int:pk>/', editar_venta, name='editar_venta'),
+    path('ventas/eliminar/<int:pk>/', eliminar_venta, name='eliminar_venta'),
 ]
