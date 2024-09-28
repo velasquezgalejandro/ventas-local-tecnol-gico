@@ -8,6 +8,36 @@ class ProductoForm(forms.ModelForm):
         model = Producto
         fields = ['nombre', 'categoria', 'descripcion', 'precio', 'stock' ]
 
+    def clean_nombre(self):
+        nombre = self.cleaned_data.get('nombre')
+        if not nombre:
+            raise forms.ValidationError('El nombre de la categoria es obligatorio.')
+        if len(nombre) < 3:
+            raise forms.ValidationError('El nombre de la categoria debe tener al menos 3 caracteres.')
+        return nombre
+
+    def clean_precio(self):
+        precio = self.cleaned_data.get('precio')
+
+        if precio is None:
+            raise forms.ValidationError('El precio es obligatorio.')
+
+        if precio <= 0:
+            raise forms.ValidationError('El precio debe ser un número positivo mayor a 0.')
+
+        return precio
+
+    def clean_stock(self):
+        stock = self.cleaned_data.get('stock')
+
+        if stock is None:
+            raise forms.ValidationError('El stock es obligatorio.')
+
+        if stock < 0:
+            raise forms.ValidationError('El stock debe ser un número entero no negativo.')
+
+        return stock
+
 ### -------------------------------------------- ###
 # categoria Form
 class CategoriaForm(forms.ModelForm):
@@ -45,7 +75,6 @@ class ClienteForm(forms.ModelForm):
         if not email:
             raise forms.ValidationError('El correo electrónico es obligatorio.')
 
-        # Verificar el formato del correo electrónico
         try:
             forms.EmailField().clean(email)
         except forms.ValidationError:
