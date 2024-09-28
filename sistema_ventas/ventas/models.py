@@ -24,8 +24,8 @@ class Producto(models.Model):
 class Cliente(models.Model):
     nombre = models.CharField(max_length=200)
     email = models.EmailField()
-    telefono = models.CharField(max_length=15)
-    direccion = models.CharField(max_length=300)
+    telefono = models.CharField(max_length=15, help_text='Ingresar el telefono sin indicadores')
+    direccion = models.CharField(max_length=300, help_text='La direccion debe ser copiada en formato completo por ej: calle 1 #1A22')
 
     def __str__(self):
         return self.nombre
