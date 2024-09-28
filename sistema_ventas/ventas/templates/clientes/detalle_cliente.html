@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle de cliente</title>
+</head>
+<body>
+  <!-- CONTENIDO -->
+  <h2>{{ cliente.nombre }}</h2>
+  <p>{{ cliente.email }}</p>
+  <p>{{ cliente.telefono }}</p>
+  <p>{{ cliente.direccion }}</p>
+  <!-- BUTONES -->
+  <br>
+  <a href="{% url 'listar_clientes' %}">
+    <button type="submit">
+      ← Volver a la lista de clientes
+    </button>
+  </a>
+  <br>
+  <br>
+  <a href="{% url 'clientes' %}">
+    <button type="submit">
+      ← Volver a las opciones de clientes
+    </button>
+  </a>
+  <br>
+  <br>
+  <a href="{% url 'inicio' %}">
+    <button type="submit">
+      Volver al inicio
+    </button>
+  </a>
+</body>
+</html>
