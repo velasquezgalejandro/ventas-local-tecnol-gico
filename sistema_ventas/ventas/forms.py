@@ -1,4 +1,5 @@
 from django import forms
+from datetime import datetime
 from .models import Producto, Categoria, Cliente, Venta
 
 ### -------------------------------------------- ###
@@ -103,6 +104,30 @@ class ClienteForm(forms.ModelForm):
 ### -------------------------------------------- ###
 # ventas form
 class VentasForm(forms.ModelForm):
+    fecha = forms.CharField(
+        widget=forms.TextInput(attrs={'placeholder': 'dd/mm/yyyy'}),
+    )
+    total = forms.CharField(disabled=True)
     class Meta:
         model = Venta
-        fields = ['producto' ,'cliente' ,'cantidad']
+        fields = ['producto', 'cliente', 'fecha', 'cantidad', 'total']
+
+    def clean_fecha(self):
+        fecha = self.cleaned_data.get('fecha')
+        if fecha:
+            try:
+                fecha_publicacion = datetime.strptime(fecha, '%d/%m/%Y').date()
+                return fecha_publicacion
+            except ValueError:
+                raise forms.ValidationError('La fecha debe estar en el formato dd/mm/yyyy.')
+        return fecha
+
+    def clean_cantidad(self):
+        cantidad = self.cleaned_data.get('cantidad')
+
+        if not cantidad:
+            raise forms.ValidationError('La cantidad es obligatoria')
+
+        if cantidad <= 0:
+            raise forms.ValidationError('La cantidad debe ser un numero positivo mayor a 0')
+        return cantidad
