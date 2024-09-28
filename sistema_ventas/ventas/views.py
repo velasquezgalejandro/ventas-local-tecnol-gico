@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from django.core.paginator import Paginator
 
-from .models import Categoria, Cliente, Producto
-from .forms import CategoriaForm, ClienteForm, ProductoForm
+from .models import Categoria, Cliente, Producto, Venta
+from .forms import CategoriaForm, ClienteForm, ProductoForm, VentasForm
 
 # Create your views here.
 def inicio(request):
@@ -180,3 +180,63 @@ def eliminar_producto(request, pk):
 # vista para acciones de ventas
 def ventas(request):
     return render(request, 'ventas.html')
+
+#lista
+def listar_ventas(request):
+    ventas_list = Venta.objects.all()
+    query = request.GET.get('q')
+
+    if query:
+        ventas_list = ventas_list.filter(Q(nombre__icontains = query))
+
+    paginator = Paginator(ventas_list, 10)
+    page_number = request.GET.get('page')
+    ventas = paginator.get_page(page_number)
+
+    return render(request, 'ventas/listar_ventas.html', {'ventas': ventas})
+
+# agrega
+def agregar_venta(request):
+    if request.method == 'POST':
+        form = VentasForm(request.POST)
+        if form.is_valid():
+            venta = form.save(commit=False)  # No guardar todavía
+            producto = venta.producto
+            venta.total = producto.precio * venta.cantidad
+            venta.save()
+            producto.stock -= venta.cantidad
+            producto.save()
+            return redirect('listar_ventas')
+    else:
+        form = VentasForm()
+    return render(request, 'ventas/agregar_venta.html', {'form':form})
+
+# detalle
+def detalle_venta(request, pk):
+    venta = Venta.objects.get(pk=pk)
+    return render(request, 'ventas/detalle_venta.html', {'venta': venta})
+
+# edita
+def editar_venta(request, pk):
+    cliente = Venta.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = VentasForm(request.POST, instance=cliente)
+        if form.is_valid():
+            venta = form.save(commit=False)  # No guardar todavía
+            producto = venta.producto
+            venta.total = producto.precio * venta.cantidad
+            venta.save()
+            producto.stock -= venta.cantidad
+            producto.save()
+            return redirect('listar_ventas')
+    else:
+        form = VentasForm(instance=cliente)
+    return render(request, 'ventas/editar_venta.html', {'form': form})
+
+# elimina
+def eliminar_venta(request, pk):
+    venta = get_object_or_404(Venta, pk=pk)
+    if request.method == 'POST':
+        venta.delete()
+        return redirect('listar_ventas')
+    return render(request, 'ventas/eliminar_venta.html', {'venta': venta})
