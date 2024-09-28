@@ -15,7 +15,7 @@ class CategoriaForm(forms.ModelForm):
         model = Categoria
         fields = ['nombre', 'descripcion']
 
-    def clean_titulo(self):
+    def clean_nombre(self):
         nombre = self.cleaned_data.get('nombre')
         if not nombre:
             raise forms.ValidationError('El nombre de la categoria es obligatorio.')
