@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import inicio, categorias, listar_categorias, agregar_categoria, editar_categoria, detalle_categoria, eliminar_categoria, clientes, listar_clientes, agregar_clientes, detalle_cliente, editar_cliente, eliminar_cliente, productos, ventas
+from .views import inicio, categorias, listar_categorias, agregar_categoria, editar_categoria, detalle_categoria, eliminar_categoria, clientes, listar_clientes, agregar_clientes, detalle_cliente, editar_cliente, eliminar_cliente, productos, listar_productos, agregar_producto, detalle_producto, editar_producto, eliminar_producto, ventas
+
 
 urlpatterns = [
     path('', inicio, name='inicio'),  # Ruta para la página de inicio
@@ -21,4 +22,11 @@ urlpatterns = [
     path('clientes/detalle/<int:pk>/', detalle_cliente, name='detalle_cliente'),
     path('clientes/editar/<int:pk>/', editar_cliente, name='editar_cliente'),
     path('clientes/eliminar/<int:pk>/', eliminar_cliente, name='eliminar_cliente'),
+
+# productos
+    path('productos/listar/', listar_productos, name='listar_productos'),
+    path('productos/agregar/', agregar_producto, name='agregar_producto'),
+    path('productos/detalle/<int:pk>/', detalle_producto, name='detalle_producto'),
+    path('productos/editar/<int:pk>/', editar_producto, name='editar_producto'),
+    path('productos/eliminar/<int:pk>/', eliminar_producto, name='eliminar_producto')
 ]
