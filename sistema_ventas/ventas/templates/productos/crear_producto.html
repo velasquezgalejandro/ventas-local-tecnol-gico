@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- FORMULARIO -->
+    <h1>Agregar Categoría</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        {% if form.errors %}
+          <h2>Errores:</h2>
+          <ul>
+            {% for field in form %}
+              {% for error in field.errors %}
+                <li>{{ field.label }}: {{ error }}</li>
+              {% endfor %}
+            {% endfor %}
+            {% if form.non_field_errors %}
+              {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+              {% endfor %}
+            {% endif %}
+          </ul>
+        {% endif %}
+
+        <button type="submit">Guardar Producto</button>
+    </form>
+     <!-- BUTONES -->
+    <br>
+    <a href="{% url 'listar_productos' %}">
+      <button type="submit">
+        ir a la lista de productos →
+      </button>
+    </a>
+    <br>
+    <br>
+    <a href="{% url 'productos' %}">
+      <button type="submit">
+        ← volver a las opciones de producto
+      </button>
+    </a>
+    <br>
+    <br>
+    <a href="{% url 'inicio' %}">
+      <button type="submit">
+        Volver al inicio
+      </button>
+    </a>
+</body>
+</html>

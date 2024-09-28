@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>lista de clientes</h>
+<!-- FILTROS -->
+
+<!-- LISTA -->
+  <ul>
+    {% for producto in productos %}
+      <li>
+        {{ producto.nombre }} - <a href="{% url 'detalle_producto'  producto.pk %}"><Button> Detalle de producto </Button></a> - <a href="{% url 'editar_producto'  producto.pk %}"><Button>Editar producto </Button></a> - <a href="{% url 'eliminar_producto'  producto.pk %}"><Button>Eliminar producto </Button></a>
+      </li>
+    {% endfor %}
+  </ul>
+  <br>
+  <div>
+      {% if posts.has_previous %}
+          <a href="?page={{ posts.previous_page_number }}">Anterior</a>
+      {% endif %}
+      <span>Pagina {{ posts.number }} de {{ posts.paginator.num_pages }}</span>
+      {% if posts.has_next %}
+          <a href="?page={{ posts.next_page_number }}">Siguente</a>
+      {% endif %}
+  </div>
+
+
+<!-- BUTONES -->
+  <br>
+  <a href="{% url 'agregar_producto' %}">
+    <button type="submit">
+      Ir a la creacion de producto →
+    </button>
+  </a>
+  <br>
+  <br>
+  <a href="{% url 'productos' %}">
+    <button type="submit">
+      ← Volver a las opciones de productos
+    </button>
+  </a>
+  <br>
+  <br>
+  <a href="{% url 'inicio' %}">
+    <button type="submit">
+      Volver al inicio
+    </button>
+  </a>
+</body>
+</html>
