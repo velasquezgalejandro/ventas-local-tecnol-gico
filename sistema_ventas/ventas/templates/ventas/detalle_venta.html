@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- CONTENIDO -->
+  <h2>{{ venta.producto }} - {{venta.cliente}}</h2>
+  <p>fecha:{{ venta.fecha }}</p>
+  <p>cantidad: <Strong>{{venta.cantidad}}</Strong> - total: <strong> &#36 {{ venta.total }}</Strong></p>
+  <!-- BUTONES -->
+  <br>
+  <a href="{% url 'listar_ventas' %}">
+    <button type="submit">
+      ← Volver a la lista de ventas
+    </button>
+  </a>
+  <br>
+  <br>
+  <a href="{% url 'ventas' %}">
+    <button type="submit">
+      ← Volver a las opciones de ventas
+    </button>
+  </a>
+  <br>
+  <br>
+  <a href="{% url 'inicio' %}">
+    <button type="submit">
+      Volver al inicio
+    </button>
+  </a>
+</body>
+</html>

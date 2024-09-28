@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listar Ventas</title>
+</head>
+<body>
+  <h1>lista de ventas</h>
+<!-- FILTROS -->
+
+<!-- LISTA -->
+  <ul>
+    {% for venta in ventas %}
+      <li>
+        {{ venta.producto }} - {{venta.cliente}} - {{venta.cantidad}} - ${{venta.total}} -<a href="{% url 'detalle_venta'  venta.pk %}"><Button> Detalle de venta </Button></a> - <a href="{% url 'editar_venta'  venta.pk %}"><Button>Editar producto </Button></a> - <a href="{% url 'eliminar_venta'  venta.pk %}"><Button>Eliminar producto </Button></a>
+      </li>
+    {% endfor %}
+  </ul>
+  <br>
+  <div>
+      {% if posts.has_previous %}
+          <a href="?page={{ posts.previous_page_number }}">Anterior</a>
+      {% endif %}
+      <span>Pagina {{ posts.number }} de {{ posts.paginator.num_pages }}</span>
+      {% if posts.has_next %}
+          <a href="?page={{ posts.next_page_number }}">Siguente</a>
+      {% endif %}
+  </div>
+
+
+<!-- BUTONES -->
+  <br>
+  <a href="{% url 'agregar_venta' %}">
+    <button type="submit">
+      Ir a la creacion de venta →
+    </button>
+  </a>
+  <br>
+  <br>
+  <a href="{% url 'ventas' %}">
+    <button type="submit">
+      ← Volver a las opciones de ventas
+    </button>
+  </a>
+  <br>
+  <br>
+  <a href="{% url 'inicio' %}">
+    <button type="submit">
+      Volver al inicio
+    </button>
+  </a>
+</body>
+</html>

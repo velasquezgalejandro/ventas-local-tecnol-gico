@@ -6,12 +6,21 @@
   <title>Ventas</title>
 </head>
 <body>
-  <a href="{% url 'inicio' %}"></a>
+  <a href="{% url 'inicio' %}">
     <button type="submit">
       ← Volver al inicio
     </button>
   </a>
   <br>
   <h1>Ventas</h1>
+  <h2>Seleccione el servicio que desea gestionar:</h2>
+  <ul>
+    <li>
+      <a href="{% url 'listar_ventas' %}">Listar ventas</a>
+    </li>
+    <li>
+      <a href="{% url 'agregar_venta' %}">Crear ventas</a>
+    </li>
+  </ul>
 </body>
 </html>
