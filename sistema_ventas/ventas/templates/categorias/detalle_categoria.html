@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle de categoria</title>
+</head>
+<body>
+  <!-- CONTENIDO -->
+  <h2>{{ categoria.nombre }}</h2>
+  <p>{{ categoria.descripcion }}</p>
+  <!-- BUTONES -->
+  <br>
+  <a href="{% url 'listar_categorias' %}">
+    <button type="submit">
+      ← Volver a la lista de categorías
+    </button>
+  </a>
+  <br>
+  <br>
+  <a href="{% url 'categorias' %}">
+    <button type="submit">
+      ← Volver a las opciones de categorías
+    </button>
+  </a>
+  <br>
+  <br>
+  <a href="{% url 'inicio' %}">
+    <button type="submit">
+      Volver al inicio
+    </button>
+  </a>
+</body>
+</html>

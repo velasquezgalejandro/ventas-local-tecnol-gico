@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de categorias</title>
+</head>
+<body>
+  <h1>lista de categorias</h>
+<!-- FILTROS -->
+  <form method="get">
+    Buscar: <input type="text" name="q">
+    <button type="submit">Filtrar por nombre</button>
+  </form>
+  <a href="{% url 'listar_categorias'  %}" class="button">
+    <button type="submit">Limpiar Filtros</button>
+  </a>
+<!-- LISTA -->
+  <ul>
+    {% for categoria in categorias %}
+      <li>
+        {{ categoria.nombre }} - <a href="{% url 'detalle_categoria'  categoria.pk %}"><Button> Detalle de categoria </Button></a> - <a href="{% url 'editar_categoria'  categoria.pk %}"><Button>Editar categoria </Button></a> - <a href="{% url 'eliminar_categoria'  categoria.pk %}"><Button>Eliminar categoria </Button></a>
+      </li>
+    {% endfor %}
+  </ul>
+  <br>
+  <div>
+      {% if posts.has_previous %}
+          <a href="?page={{ posts.previous_page_number }}">Anterior</a>
+      {% endif %}
+      <span>Pagina {{ posts.number }} de {{ posts.paginator.num_pages }}</span>
+      {% if posts.has_next %}
+          <a href="?page={{ posts.next_page_number }}">Siguente</a>
+      {% endif %}
+  </div>
+
+
+<!-- BUTONES -->
+  <br>
+  <a href="{% url 'agregar_categoria' %}">
+    <button type="submit">
+      Ir a la creacion de categoria →
+    </button>
+  </a>
+  <br>
+  <br>
+  <a href="{% url 'categorias' %}">
+    <button type="submit">
+      ← Volver a las opciones de categorías
+    </button>
+  </a>
+  <br>
+  <br>
+  <a href="{% url 'inicio' %}">
+    <button type="submit">
+      Volver al inicio
+    </button>
+  </a>
+</body>
+</html>

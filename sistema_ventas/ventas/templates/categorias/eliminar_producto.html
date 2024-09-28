@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eliminar categoria</title>
+</head>
+<body>
+  <!-- FORMs -->
+    <p>¿Estás seguro de que deseas eliminar la categoria: "{{ categoria.nombre }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Eliminar Producto</button>
+    </form>
+    <a href="{% url 'listar_categorias' %}">Cancelar</a>
+</body>
+</html>
