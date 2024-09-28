@@ -62,7 +62,7 @@ def eliminar_categoria(request, pk):
     if request.method == 'POST':
         categoria.delete()
         return redirect('listar_categorias')
-    return render(request, 'categorias/eliminar_producto.html', {'categoria': categoria})
+    return render(request, 'categorias/eliminar_categoria.html', {'categoria': categoria})
 
 ### -------------------------------------------------------------------###
 # vista para acciones de clientes
