@@ -34,8 +34,9 @@ class Cliente(models.Model):
 class Venta(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
-    fecha = models.DateTimeField()
+    fecha = models.DateField(help_text='La fecha debe estar en el formato dd/mm/yyyy')
     cantidad = models.IntegerField()
+    total = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
         return f"Venta de {self.cantidad} {self.producto.nombre} a {self.cliente.nombre}"
