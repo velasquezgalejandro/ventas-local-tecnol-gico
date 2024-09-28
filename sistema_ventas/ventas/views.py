@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from django.core.paginator import Paginator
 
-from .models import Categoria, Cliente
-from .forms import CategoriaForm, ClienteForm
+from .models import Categoria, Cliente, Producto
+from .forms import CategoriaForm, ClienteForm, ProductoForm
 
 # Create your views here.
 def inicio(request):
@@ -125,6 +125,56 @@ def eliminar_cliente(request, pk):
 # vista para acciones de productos
 def productos(request):
     return render(request, 'productos.html')
+
+#lista
+def listar_productos(request):
+    producto_list = Producto.objects.all()
+    query = request.GET.get('q')
+
+    if query:
+        producto_list = producto_list.filter(Q(nombre__icontains = query))
+
+    paginator = Paginator(producto_list, 10)
+    page_number = request.GET.get('page')
+    productos = paginator.get_page(page_number)
+
+    return render(request, 'productos/listar_productos.html', {'productos': productos})
+
+# agrega
+def agregar_producto(request):
+    if request.method == 'POST':
+        form = ProductoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_productos')
+    else:
+        form = ProductoForm()
+    return render(request, 'productos/crear_producto.html', {'form':form})
+
+# detalle
+def detalle_producto(request, pk):
+    producto = Producto.objects.get(pk=pk)
+    return render(request, 'productos/detalle_producto.html', {'producto': producto})
+
+# edita
+def editar_producto(request, pk):
+    cliente = Producto.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = ProductoForm(request.POST, instance=cliente)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_productos')
+    else:
+        form = ProductoForm(instance=cliente)
+    return render(request, 'productos/editar_producto.html', {'form': form})
+
+# elimina
+def eliminar_producto(request, pk):
+    producto = get_object_or_404(Producto, pk=pk)
+    if request.method == 'POST':
+        producto.delete()
+        return redirect('listar_productos')
+    return render(request, 'productos/eliminar_producto.html', {'producto': producto})
 
 ### -------------------------------------------------------------------###
 # vista para acciones de ventas
