@@ -30,12 +30,12 @@
   </ul>
   <br>
   <div>
-      {% if posts.has_previous %}
-          <a href="?page={{ posts.previous_page_number }}">Anterior</a>
+      {% if productos.has_previous %}
+          <a href="?page={{ productos.previous_page_number }}">Anterior</a>
       {% endif %}
-      <span>Pagina {{ posts.number }} de {{ posts.paginator.num_pages }}</span>
-      {% if posts.has_next %}
-          <a href="?page={{ posts.next_page_number }}">Siguente</a>
+      <span>Pagina {{ productos.number }} de {{ productos.paginator.num_pages }}</span>
+      {% if productos.has_next %}
+          <a href="?page={{ productos.next_page_number }}">Siguente</a>
       {% endif %}
   </div>
 
