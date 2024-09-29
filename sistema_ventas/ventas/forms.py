@@ -107,7 +107,7 @@ class VentasForm(forms.ModelForm):
     fecha = forms.CharField(
         widget=forms.TextInput(attrs={'placeholder': 'dd/mm/yyyy'}),
     )
-    total = forms.CharField(disabled=True)
+    total = forms.CharField(disabled=True,  required=False)
     class Meta:
         model = Venta
         fields = ['producto', 'cliente', 'fecha', 'cantidad', 'total']
