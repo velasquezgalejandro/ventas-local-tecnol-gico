@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from django.core.paginator import Paginator
+from datetime import datetime
 
 from .models import Categoria, Cliente, Producto, Venta
 from .forms import CategoriaForm, ClienteForm, ProductoForm, VentasForm
@@ -75,7 +76,7 @@ def listar_clientes(request):
     query = request.GET.get('q')
 
     if query:
-        clientes_list = clientes_list.filter(Q(nombre__icontains = query))
+        clientes_list = clientes_list.filter(Q(nombre__icontains = query) | Q(telefono__icontains = query))
 
     paginator = Paginator(clientes_list, 10)
     page_number = request.GET.get('page')
@@ -130,9 +131,17 @@ def productos(request):
 def listar_productos(request):
     producto_list = Producto.objects.all()
     query = request.GET.get('q')
+    precio_minimo = request.GET.get('precio_minimo')
+    precio_maximo = request.GET.get('precio_maximo')
 
     if query:
-        producto_list = producto_list.filter(Q(nombre__icontains = query))
+        producto_list = producto_list.filter(Q(nombre__icontains = query) | Q(categoria__icontains = query))
+
+    if precio_minimo:
+        producto_list = producto_list.filter(precio__gte=precio_minimo)
+
+    if precio_maximo:
+        producto_list = producto_list.filter(precio__lte=precio_maximo)
 
     paginator = Paginator(producto_list, 10)
     page_number = request.GET.get('page')
@@ -185,9 +194,38 @@ def ventas(request):
 def listar_ventas(request):
     ventas_list = Venta.objects.all()
     query = request.GET.get('q')
+    fecha_min_str = request.GET.get('fecha_min')
+    fecha_max_str = request.GET.get('fecha_max')
+
+    try:
+        if fecha_min_str:
+            fecha_min = datetime.strptime(fecha_min_str, '%d/%m/%Y').date()
+        else:
+            fecha_min = None
+
+        if fecha_max_str:
+            fecha_max = datetime.strptime(fecha_max_str, '%d/%m/%Y').date()
+        else:
+            fecha_max = None
+    except ValueError:
+        fecha_min = None
+        fecha_max = None
+
+    if fecha_min and fecha_max:
+        if fecha_min <= fecha_max:
+            ventas_list = ventas_list.filter(
+                fecha__gte=fecha_min,
+                fecha__lte=fecha_max
+            )
+        else:
+            ventas_list = ventas_list.none()
+    elif fecha_min:
+        ventas_list = ventas_list.filter(fecha__gte=fecha_min)
+    elif fecha_max:
+        ventas_list = ventas_list.filter(fecha__lte=fecha_max)
 
     if query:
-        ventas_list = ventas_list.filter(Q(nombre__icontains = query))
+        ventas_list = ventas_list.filter(Q(producto__icontains = query) | Q(cliente__icontains = query))
 
     paginator = Paginator(ventas_list, 10)
     page_number = request.GET.get('page')
@@ -202,11 +240,15 @@ def agregar_venta(request):
         if form.is_valid():
             venta = form.save(commit=False)  # No guardar todavía
             producto = venta.producto
-            venta.total = producto.precio * venta.cantidad
-            venta.save()
-            producto.stock -= venta.cantidad
-            producto.save()
-            return redirect('listar_ventas')
+            # Verificar si hay suficiente stock
+            if producto.stock < venta.cantidad:
+                form.add_error('cantidad', 'No hay suficiente stock disponible.')
+            else:
+                venta.total = producto.precio * venta.cantidad
+                venta.save()
+                producto.stock -= venta.cantidad
+                producto.save()
+                return redirect('listar_ventas')
     else:
         form = VentasForm()
     return render(request, 'ventas/agregar_venta.html', {'form':form})
@@ -224,11 +266,15 @@ def editar_venta(request, pk):
         if form.is_valid():
             venta = form.save(commit=False)  # No guardar todavía
             producto = venta.producto
-            venta.total = producto.precio * venta.cantidad
-            venta.save()
-            producto.stock -= venta.cantidad
-            producto.save()
-            return redirect('listar_ventas')
+            # Verificar si hay suficiente stock
+            if producto.stock < venta.cantidad:
+                form.add_error('cantidad', 'No hay suficiente stock disponible.')
+            else:
+                venta.total = producto.precio * venta.cantidad
+                venta.save()
+                producto.stock -= venta.cantidad
+                producto.save()
+                return redirect('listar_ventas')
     else:
         form = VentasForm(instance=cliente)
     return render(request, 'ventas/editar_venta.html', {'form': form})
