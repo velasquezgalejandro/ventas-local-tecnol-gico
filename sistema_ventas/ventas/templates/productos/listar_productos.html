@@ -6,14 +6,25 @@
   <title>Document</title>
 </head>
 <body>
-  <h1>lista de clientes</h>
+  <h1>lista de productos</h>
 <!-- FILTROS -->
-
+  <form method="get">
+    Buscar: <input type="text" name="q">
+    <button type="submit">Filtrar por nombre o categoria</button>
+  </form>
+  <form method="get">
+    Precio minimo: <input type="number" name="precio_minimo">
+    Precio maximo: <input type="number" name="precio_maximo">
+    <button type="submit">Filtrar por un rango de precios</button>
+  </form>
+  <a href="{% url 'listar_productos' %}" class="button">
+    <button type="submit">Limpiar Filtros</button>
+  </a>
 <!-- LISTA -->
   <ul>
     {% for producto in productos %}
       <li>
-        {{ producto.nombre }} - <a href="{% url 'detalle_producto'  producto.pk %}"><Button> Detalle de producto </Button></a> - <a href="{% url 'editar_producto'  producto.pk %}"><Button>Editar producto </Button></a> - <a href="{% url 'eliminar_producto'  producto.pk %}"><Button>Eliminar producto </Button></a>
+        {{ producto.nombre }} - {{producto.categoria}} - {{producto.precio}} - {{producto.stock}} - <a href="{% url 'detalle_producto'  producto.pk %}"><Button> Detalle de producto </Button></a> - <a href="{% url 'editar_producto'  producto.pk %}"><Button>Editar producto </Button></a> - <a href="{% url 'eliminar_producto'  producto.pk %}"><Button>Eliminar producto </Button></a>
       </li>
     {% endfor %}
   </ul>

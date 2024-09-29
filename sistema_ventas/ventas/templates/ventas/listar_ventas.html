@@ -9,6 +9,19 @@
   <h1>lista de ventas</h>
 <!-- FILTROS -->
 
+  <form method="get">
+    Buscar: <input type="text" name="q">
+    <button type="submit">Filtrar por nombre o cliente</button>
+  </form>
+  <form method="get">
+      Fecha minima: <input name="fecha_min" >
+      Fecha maxima: <input name="fecha_max">
+    <button type="submit">Filtrar por un rango de fechas</button>
+  </form>
+  <a href="{% url 'listar_ventas' %}" class="button">
+    <button type="submit">Limpiar Filtros</button>
+  </a>
+
 <!-- LISTA -->
   <ul>
     {% for venta in ventas %}
